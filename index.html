@@ -395,3 +395,451 @@ showQuestion();
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0b12">
+<meta name="description" content="MINDVERSE — Explore human psychology, emotions, memory, habits and behaviour through simple lessons and quizzes.">
+<title>MINDVERSE — Explore the Human Mind</title>
+
+<style>
+:root {
+  --bg:#0b0b12;
+  --panel:#14141f;
+  --panel2:#1b1b29;
+  --text:#f5f5fa;
+  --muted:#a7a7bb;
+  --accent:#a78bfa;
+  --green:#79e0b1;
+  --border:#2b2b3c;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+button,input { font:inherit; }
+a { color:inherit; text-decoration:none; }
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(11,11,18,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav {
+  max-width:1100px;
+  margin:auto;
+  padding:14px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.logo { font-weight:900; letter-spacing:3px; }
+.logo span { color:var(--accent); }
+nav { display:flex; gap:18px; flex-wrap:wrap; }
+nav a { color:var(--muted); font-size:14px; }
+nav a:hover { color:var(--accent); }
+.container { max-width:1100px; margin:auto; padding:24px 20px; }
+.hero { padding-top:65px; padding-bottom:55px; }
+.tag {
+  color:var(--green);
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:bold;
+}
+h1 {
+  font-size:clamp(38px,7vw,70px);
+  line-height:1.08;
+  letter-spacing:-2px;
+  margin:16px 0;
+}
+h1 span { color:var(--accent); }
+h2 { font-size:30px; line-height:1.2; }
+h3 { line-height:1.3; }
+p { color:var(--muted); }
+.hero p { max-width:650px; font-size:17px; }
+.btn {
+  display:inline-block;
+  background:var(--accent);
+  color:#171022;
+  padding:12px 18px;
+  border:0;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  margin:8px 8px 0 0;
+}
+.btn.secondary {
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:35px;
+}
+.stat,.card,.lesson,.quizbox,.daily,.aboutbox {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+}
+.stat strong { display:block; font-size:25px; color:var(--accent); }
+.stat span { color:var(--muted); font-size:13px; }
+.section-head { margin:30px 0 20px; }
+.section-head p { margin-top:-8px; }
+.search {
+  width:100%;
+  padding:15px;
+  border-radius:12px;
+  background:var(--panel);
+  color:var(--text);
+  border:1px solid var(--border);
+  margin:10px 0 16px;
+  outline:none;
+}
+.filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:22px; }
+.filter {
+  padding:9px 13px;
+  background:var(--panel2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  color:var(--muted);
+  cursor:pointer;
+}
+.filter.active { background:var(--accent); color:#171022; }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.card { display:flex; flex-direction:column; }
+.card .emoji { font-size:30px; }
+.card h3 { margin-bottom:4px; }
+.card p { flex:1; font-size:14px; }
+.card button { align-self:flex-start; }
+.badge {
+  display:inline-block;
+  color:var(--green);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.lesson { margin:18px 0; }
+.lesson h3 { color:var(--accent); }
+.example {
+  background:#10101a;
+  border-left:3px solid var(--green);
+  padding:12px 15px;
+  margin:15px 0;
+  border-radius:0 8px 8px 0;
+}
+.daily { background:linear-gradient(135deg,#201936,#14141f); }
+.quizbox { margin-top:20px; }
+.option {
+  display:block;
+  width:100%;
+  text-align:left;
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  margin:8px 0;
+  cursor:pointer;
+}
+.option:hover { border-color:var(--accent); }
+.option:disabled { cursor:default; opacity:1; }
+.feedback { min-height:28px; color:var(--green); }
+.progress {
+  height:7px;
+  background:var(--panel2);
+  border-radius:10px;
+  overflow:hidden;
+  margin:12px 0;
+}
+.progress div {
+  height:100%;
+  width:0;
+  background:var(--accent);
+  transition:width .3s;
+}
+footer {
+  border-top:1px solid var(--border);
+  margin-top:40px;
+  padding:30px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+.hidden { display:none !important; }
+@media(max-width:800px) {
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  nav { gap:10px; }
+}
+@media(max-width:540px) {
+  .grid { grid-template-columns:1fr; }
+  .stats { grid-template-columns:1fr; }
+  .nav { align-items:flex-start; flex-direction:column; }
+  nav { gap:14px; }
+  .hero { padding-top:40px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="nav">
+    <a class="logo" href="#home">MIND<span>VERSE</span></a>
+    <nav>
+      <a href="#learn">Learn</a>
+      <a href="#daily">Daily Insight</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="container hero" id="home">
+  <div class="tag">Understand yourself. Understand people.</div>
+  <h1>Explore the <span>human mind.</span></h1>
+  <p>
+    Welcome to MINDVERSE — a beginner-friendly learning space for
+    understanding memory, emotions, habits, thinking and human behaviour.
+    Learn through simple explanations, everyday examples and quizzes.
+  </p>
+  <a class="btn" href="#learn">Start learning ↓</a>
+  <a class="btn secondary" href="#quiz">Test your knowledge</a>
+
+  <div class="stats">
+    <div class="stat"><strong>12</strong><span>Learning topics</span></div>
+    <div class="stat"><strong>Real life</strong><span>Everyday examples</span></div>
+    <div class="stat"><strong>Learn + test</strong><span>Interactive quiz</span></div>
+  </div>
+</section>
+
+<section class="container" id="learn">
+  <div class="section-head">
+    <div class="tag">Your learning library</div>
+    <h2>Discover psychology</h2>
+    <p>Search for a topic or select a category. Open any card to study the lesson.</p>
+  </div>
+
+  <input class="search" id="search" type="search"
+    placeholder="Search: memory, habits, emotions..." aria-label="Search lessons">
+
+  <div class="filters">
+    <button class="filter active" data-filter="All">All topics</button>
+    <button class="filter" data-filter="Brain">Brain & Memory</button>
+    <button class="filter" data-filter="Emotions">Emotions</button>
+    <button class="filter" data-filter="Habits">Habits</button>
+    <button class="filter" data-filter="Thinking">Thinking</button>
+    <button class="filter" data-filter="Social">Social Psychology</button>
+    <button class="filter" data-filter="Relationships">Relationships</button>
+  </div>
+
+  <div class="grid" id="cards"></div>
+  <p id="noResults" class="hidden">No lessons found. Try another search.</p>
+</section>
+
+<section class="container" id="daily">
+  <div class="section-head">
+    <div class="tag">Small idea, big insight</div>
+    <h2>Daily psychology insight</h2>
+  </div>
+  <div class="daily">
+    <h3 id="dailyTitle">The spotlight effect</h3>
+    <p id="dailyText"></p>
+    <button class="btn secondary" id="nextInsight">Show another insight</button>
+  </div>
+</section>
+
+<section class="container" id="quiz">
+  <div class="section-head">
+    <div class="tag">Check what you learned</div>
+    <h2>Psychology quiz</h2>
+    <p>Choose an answer. Each question includes an explanation.</p>
+  </div>
+  <div class="quizbox">
+    <div id="quizCount">Question 1</div>
+    <div class="progress"><div id="progressBar"></div></div>
+    <h3 id="question"></h3>
+    <div id="options"></div>
+    <p class="feedback" id="feedback" aria-live="polite"></p>
+    <button class="btn hidden" id="nextQuestion">Next question →</button>
+    <div id="quizResult" class="hidden"></div>
+    <button class="btn secondary hidden" id="restartQuiz">Try again</button>
+  </div>
+</section>
+
+<section class="container" id="about">
+  <div class="section-head">
+    <div class="tag">About this project</div>
+    <h2>Psychology for everyday life</h2>
+  </div>
+  <div class="aboutbox">
+    <p>
+      MINDVERSE aims to make introductory psychology easier to understand.
+      Lessons explain concepts, give practical examples and suggest small
+      activities to help you reflect on your own experiences.
+    </p>
+    <h3>How to learn effectively</h3>
+    <p>
+      1. Choose one lesson. 2. Read it slowly. 3. Think of a real-life example.
+      4. Try the suggested activity. 5. Answer the quiz questions.
+      Understanding one concept deeply is more useful than memorising many names.
+    </p>
+    <h3>Important note</h3>
+    <p>
+      This website is for education, not diagnosis or treatment.
+      Behaviour alone cannot reveal exactly what someone is thinking.
+      People differ, and psychological ideas are not universal rules.
+      For serious mental health concerns, talk to a qualified professional.
+    </p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="logo">MIND<span>VERSE</span></div>
+  <p>Learn about the mind with curiosity, evidence and empathy.</p>
+  <p>Educational project • Keep questioning, keep learning.</p>
+</footer>
+
+<script>
+const lessons = [
+{
+ id:1,cat:"Brain",emoji:"🧠",title:"How memory works",level:"Beginner",
+ summary:"Learn how we take in, store and remember information.",
+ explain:`Memory is the ability to take in information, keep it and retrieve it later. Psychologists often discuss three broad processes: encoding, storage and retrieval.
+
+Encoding is when information first enters your mind. Storage means retaining it over time. Retrieval means bringing it back when you need it.
+
+Attention matters because information that never receives enough attention may not be remembered well. Repeatedly looking at notes can feel familiar, but familiarity is not the same as being able to recall an answer without help.
+
+Active recall means closing the book and trying to remember what you learned. Spaced practice means reviewing information across several sessions instead of cramming everything into one sitting. These methods can make learning more effective.`,
+ example:"You study five English words. Instead of reading them ten times, close the notebook and try to write their meanings. Review them again tomorrow.",
+ action:"Study a short paragraph, close it, and write three things you remember. Then check what you missed.",
+ fact:"Forgetting can happen for several reasons, including weak encoding, interference from other information, or difficulty retrieving a memory.",
+ tags:"memory brain learning recall study forget"
+},
+{
+ id:2,cat:"Brain",emoji:"🔎",title:"Attention and focus",level:"Beginner",
+ summary:"Understand why distractions interrupt learning.",
+ explain:`Attention helps your brain prioritise some information over other information. When you study while repeatedly checking notifications, you keep shifting what you focus on.
+
+Switching between tasks has a cost. You may need time to return to the original task and remember where you were. This is one reason multitasking can make difficult learning less efficient.
+
+Focus is not a fixed talent that some people have and others lack. Your environment, sleep, stress, task difficulty and habits can all affect it.
+
+Make the task specific. “Study maths” is broad. “Solve three basic questions on limits” gives you a clearer starting point.`,
+ example:"You start a chapter, open a social media notification and then spend fifteen minutes scrolling. Returning to the chapter may feel harder because your attention has shifted.",
+ action:"Put your phone out of reach and work on one small task for 15 minutes. Take a short break afterward.",
+ fact:"A distraction-free environment can help, but attention naturally fluctuates. Needing a break does not mean you are lazy.",
+ tags:"attention focus concentration distraction phone study brain"
+},
+{
+ id:3,cat:"Brain",emoji:"🌙",title:"Sleep and learning",level:"Beginner",
+ summary:"Explore why sleep matters for memory and attention.",
+ explain:`Sleep supports many functions that help you learn, including attention, emotional regulation and memory. Learning can be harder when you are very tired because it may be more difficult to concentrate and process information.
+
+Sleep is not simply wasted study time. Rest after learning is part of taking care of the brain. Regular sleep schedules can help some people feel more alert during the day.
+
+The exact amount of sleep a person needs varies with age and individual circumstances. Teenagers generally need more sleep than adults.`,
+ example:"You revise late into the night but feel unable to concentrate during class the next morning. Being awake longer did not necessarily make the learning session more effective.",
+ action:"Try to keep a reasonably consistent bedtime and avoid sacrificing sleep repeatedly to study.",
+ fact:"Sleep and memory have a complex relationship; one night of sleep does not guarantee that every detail will be remembered.",
+ tags:"sleep memory brain learning tired rest"
+},
+{
+ id:4,cat:"Brain",emoji:"💭",title:"Why we dream",level:"Beginner",
+ summary:"What science can and cannot tell us about dreams.",
+ explain:`Dreams are experiences that happen during sleep. They can include images, emotions, memories and unusual combinations of events. Vivid dreams are common during REM sleep, although dreaming can occur during other sleep stages too.
+
+Scientists study how dreaming relates to sleep, memory and emotion, but there is no single explanation that accounts for every dream. A dream about a person or event does not reliably predict the future or prove what someone secretly wants.
+
+Dreams can be influenced by recent experiences, concerns, memories and many other factors. Individual dream meanings should be treated cautiously.`,
+ example:"After watching an exciting film, you dream about an adventure. That does not mean the dream is a prediction or a hidden message with one definite meaning.",
+ action:"If you are curious, write down a dream and the feelings you remember. Treat it as personal reflection, not proof of a diagnosis.",
+ fact:"Dreams can feel meaningful, but science cannot decode every dream into one universal message.",
+ tags:"dreams sleep brain memory imagination"
+},
+{
+ id:5,cat:"Emotions",emoji:"❤️",title:"Understanding emotions",level:"Beginner",
+ summary:"Learn what emotions do and how to notice them.",
+ explain:`Emotions are responses that involve feelings, body changes, thoughts and action tendencies. Happiness, anger, fear, sadness and surprise are common examples.
+
+Emotions provide information about how we are responding to a situation, but they are not always accurate descriptions of what is happening. Feeling nervous before a test does not prove that you will fail. Feeling angry does not mean that acting aggressively is the best choice.
+
+You can notice an emotion without immediately acting on it. Naming a feeling may help you pause and choose a response that fits your values and the situation.`,
+ example:"A friend does not reply to your message. You feel worried and think they are angry. There may be other explanations, such as being busy or not seeing the message.",
+ action:"Ask yourself: What am I feeling? What happened? What evidence do I have? What else might explain the situation?",
+ fact:"Emotions are real experiences, but the interpretation attached to an emotion can still be mistaken.",
+ tags:"emotions feelings anger sadness happiness fear"
+},
+{
+ id:6,cat:"Emotions",emoji:"🌧️",title:"Stress and the body",level:"Beginner",
+ summary:"Understand the stress response and simple coping skills.",
+ explain:`Stress is a response that can arise when demands feel difficult, uncertain or greater than the resources available to deal with them. The body may become more alert, the heart may beat faster and thoughts may move quickly.
+
+A stress response can sometimes help you respond to a challenge. When stress is intense or continues for a long time, it may affect sleep, concentration, mood and daily activities.
+
+Helpful coping strategies vary from person to person. Breaking a task into smaller steps, taking a calm breathing pause, moving your body, talking to someone supportive and protecting sleep may help.
+
+If stress is persistent or seriously interferes with everyday life, consider talking with a trusted adult or qualified professional.`,
+ example:"An exam feels overwhelming when you think about the whole syllabus. Dividing it into one chapter and a few questions makes the next step clearer.",
+ action:"Write down one stressor and one small action you can take today. Focus on what is within your control.",
+ fact:"Stress does not affect everyone in the same way, and simple coping tools are not a substitute for professional help when it is needed.",
+ tags:"stress anxiety body coping exam pressure"
+},
+{
+ id:7,cat:"Emotions",emoji:"🧘",title:"Emotional regulation",level:"Beginner",
+ summary:"Respond to strong feelings without ignoring them.",
+ explain:`Emotional regulation means influencing how you experience or express emotions. It does not mean being emotionless or pretending everything is fine.
+
+One useful approach is to pause before responding. Notice the emotion, identify what triggered it and consider what action would help rather than make the situation worse.
+
+Different strategies work in different situations. You might reframe a misunderstanding, take a short break, solve a practical problem or talk honestly with someone. Avoiding every difficult feeling is not the same as managing emotions effectively.
+
+Practice helps, but nobody regulates emotions perfectly all the time.`,
+ example:"Someone makes a comment that annoys you. Instead of replying instantly, you wait a moment and decide whether to ask what they meant.",
+ action:"Next time you notice a strong feeling, name it and take a few slow, comfortable breaths before deciding what to do.",
+ fact:"The goal is not to eliminate emotions; it is to respond to them in a useful and safe way.",
+ tags:"emotional regulation calm anger feelings mindfulness"
+},
+{
+ id:8,cat:"Habits",emoji:"🔁",title:"How habits form",level:"Beginner",
+ summary:"Explore cues, routines and rewards.",
+ explain:`A habit is a behaviour that becomes more automatic after being repeated in a familiar context. A useful way to understand a habit is to look at its cue, the behaviour that follows and the result that makes repeating it more likely.
+
+For example, seeing a phone notification can cue you to open an app. The new information or entertainment may reward that behaviour, making it easier to repeat next time.
+
+Habits are influenced by context, effort, repetition and reward. They do not all form in the same number of days. Changing a habit may require adjusting the environment and planning for difficult moments.
+
+Start with a small action that is easy to repeat instead of relying entirely on motivation.`,
+ example:"You want to read daily. Keeping your book beside your study space gives you a visible cue to read a page after sitting down.",
+ action:"Choose one habit. Identify its usual cue, the action you take and one change that could make your preferred behaviour easier.",
+ fact:"A missed day does not erase all progress. Returning to the routine is often more useful than giving up.",
+ tags:"habits routine repetition reward behaviour discipline"
+},
+{
+ id:9,cat:"Habits",emoji:"🚀",title:"Motivation and discipline",level:"Beginner",
+ summary:"Make progress even when you do not feel motivated.",
+ explain:`Motivation is the desire or willingness to do something. It changes with mood, energy, expectations and circumstances. Discipline often refers to following a plan even when enthusiasm is low.
+
+Neither one means forcing yourself to work without rest. A useful system makes the next action clear, manageable and realistic.
+
+Instead of setting a vague goal such as “become excellent at maths,”
